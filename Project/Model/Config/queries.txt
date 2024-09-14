@@ -1,0 +1,1 @@
+Dame la respuesta en una querie de una base de datos de mysql
