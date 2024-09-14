@@ -14,10 +14,10 @@ ai = Prompt()
 # Definir la ruta principal
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'Si, funciona!'
 
-# Definir la ruta /echo
-@app.route('/echo', methods=['POST'])
+# Definir la ruta /prompt
+@app.route('/prompt', methods=['POST'])
 def echo():
     # Obtener el cuerpo de la solicitud
     data = request.json
