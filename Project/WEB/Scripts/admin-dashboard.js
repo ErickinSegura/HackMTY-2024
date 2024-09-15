@@ -49,12 +49,9 @@ function updateProductInfo(productId) {
 
     $('#productName').text(product.name);
     $('#productImage').attr('src', product.image);
-    
     $('#goodComments').html(product.goodComments.map(comment => `<li>${comment}</li>`).join(''));
     $('#badComments').html(product.badComments.map(comment => `<li>${comment}</li>`).join(''));
-    
     $('#commentSummary').text(product.summary);
-    
     $('#ratings').html(Object.entries(product.ratings).map(([category, rating]) => `
         <div class="rating-item">
             <span>${category}:</span>
@@ -62,7 +59,45 @@ function updateProductInfo(productId) {
         </div>
     `).join(''));
 
-    $('#productInfo').show();
+    $('#queryCard').fadeOut(300, function() {
+        $('#productInfo').fadeIn(300);
+    });
+}
+
+function showQueryCard() {
+    $('#productInfo').fadeOut(300, function() {
+        $('#queryCard').fadeIn(300);
+    });
+}
+
+function typeWriter(text, element, i, fnCallback) {
+    if (i < text.length) {
+        element.text(text.substring(0, i+1));
+        setTimeout(function() {
+            typeWriter(text, element, i + 1, fnCallback)
+        }, 50);
+    } else if (typeof fnCallback == 'function') {
+        setTimeout(fnCallback, 700);
+    }
+}
+
+function startTyping(text) {
+    let container = $('#modelResponse');
+    container.html('<div class="typing-container"><span class="typing-text"></span></div>');
+    let element = container.find('.typing-text');
+    typeWriter(text, element, 0, function() {
+        element.removeClass('typing-text');
+        container.html(text);
+    });
+}
+
+function submitQuery() {
+    const query = $('#queryInput').val();
+    // Aquí deberías hacer la llamada a tu modelo de IA
+    // Por ahora, simularemos una respuesta
+    const response = `Respuesta simulada para la consulta: "${query}"`;
+    
+    startTyping(response);
 }
 
 $(document).ready(function() {
@@ -71,13 +106,12 @@ $(document).ready(function() {
         if (productId) {
             updateProductInfo(productId);
         } else {
-            $('#productInfo').hide();
-            alert('Por favor, selecciona un producto.');
+            showQueryCard();
         }
     });
+
+    $('#submitQuery').click(submitQuery);
+
+    // Mostrar la tarjeta de consulta inicialmente
+    showQueryCard();
 });
-
-
-
-
-
