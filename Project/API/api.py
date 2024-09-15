@@ -44,25 +44,25 @@ def get_resume(product_id):
 
     return jsonify(comentarios)
 
-@app.route('/best_comments/<int:product_id>', methods=['GET'])
-def get_best_comments(product_id):
-    comentarios = db.get_comments_from_product(product_id)
+@app.route('/best_comments/<string:product_name>', methods=['GET'])
+def get_best_comments(product_name):
+    comentarios = db.get_comments_from_name(product_name)
     comentarios = str(comentarios) + " 2"
     response = ai.prompt(comentarios, 3)
     response = eval(response)
     return jsonify(response)
 
-@app.route('/worst_comments/<int:product_id>', methods=['GET'])
-def get_worst_comments(product_id):
-    comentarios = db.get_comments_from_product(product_id)
+@app.route('/worst_comments/<string:product_name>', methods=['GET'])
+def get_worst_comments(product_name):
+    comentarios = db.get_comments_from_name(product_name)
     comentarios = str(comentarios) + " 3"
     response = ai.prompt(comentarios, 3)
     response = eval(response)
     return jsonify(response)
 
-@app.route('/op_general/<int:product_id>', methods=['GET'])
-def get_general_opinion(product_id):
-    comentarios = db.get_comments_from_product(product_id)
+@app.route('/op_general/<string:product_name>', methods=['GET'])
+def get_general_opinion(product_name):
+    comentarios = db.get_comments_from_name(product_name)
     comentarios = str(comentarios) + " 1"
     response = ai.prompt(comentarios, 3)
     return jsonify(response)
@@ -96,7 +96,53 @@ def opinion():
 
     return jsonify({"status": "success", "message": "Comentario agregado correctamente"})
 
+@app.route('/comments/<string:product_name>', methods=['GET'])
+def get_comments(product_name):
+    print(f"Buscando comentarios para el producto: {product_name}")
+    comentarios = db.get_comments_from_name(product_name)
+    comentarios = [comentario[0] for comentario in comentarios]
+    return jsonify(comentarios)
 
+@app.route('/start', methods=['GET'])
+def start():
+    # Restart opiniones
+    db.run_query("DELETE FROM opinion")
+
+    products = db.run_query("SELECT nombre FROM productos")
+    products = [product[0] for product in products]
+
+    for product in products:
+
+        product_id_query = f"SELECT id_producto FROM productos WHERE nombre = '{product}'"
+        product_id = db.run_query(product_id_query)[0][0]
+
+        comentarios = db.get_comments_from_name(product)
+        comentarios = [comentario[0] for comentario in comentarios]
+
+        for comentario in comentarios:
+            result = eval(ai.prompt(comentario, 2))
+            for opinion in result:
+
+                # Categorize the opinion
+                if opinion[0] == "Tiempo de entrega":
+                    cat = 0
+                elif opinion[0] == "Calidad de los materiales":
+                    cat = 1
+                elif opinion[0] == "Comodidad de uso":
+                    cat = 2
+                elif opinion[0] == "Estética":
+                    cat = 3
+                elif opinion[0] == "Precio":
+                    cat = 4
+
+                # Insert the opinion into the database
+                db.insert_opinion(product_id, cat, opinion[1])  # Insert the opinion into the database
+    return jsonify({"status": "success", "message": "Proceso completado"})
+
+@app.route('/get_score/<string:product_name>/<int:category>', methods=['GET'])
+def get_score(product_name, category):
+    score = db.get_score(product_name, category)
+    return jsonify({"score": score})
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

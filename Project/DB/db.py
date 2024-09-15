@@ -73,6 +73,28 @@ class DB:
                 self.cursor.close()
         return self.result
     
+    def get_comments_from_name(self, product):
+        self.conn = mysql.connector.connect(
+            host=self.credentials[0],
+            user=self.credentials[1],
+            password=self.credentials[2],
+            database=self.credentials[3],
+            port=int(self.credentials[4]),
+            ssl_ca=self.credentials[5]
+        )
+
+        try:
+            self.cursor = self.conn.cursor()
+            self.cursor.execute("CALL get_comments_from_name(%s)", (product,))
+            self.result = self.cursor.fetchall()
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            self.result = []
+        finally:
+            if self.cursor:
+                self.cursor.close()
+        return self.result
+
     def insert_opinion(self, product_id, cat, valuacion):
         self.conn = mysql.connector.connect(
             host=self.credentials[0],
@@ -93,6 +115,27 @@ class DB:
             if self.cursor:
                 self.cursor.close()
 
+    def get_score(self, product_name, category):
+        self.conn = mysql.connector.connect(
+            host=self.credentials[0],
+            user=self.credentials[1],
+            password=self.credentials[2],
+            database=self.credentials[3],
+            port=int(self.credentials[4]),
+            ssl_ca=self.credentials[5]
+        )
+
+        try:
+            self.cursor = self.conn.cursor()
+            self.cursor.execute("CALL get_score(%s, %s)", (product_name, category))
+            self.result = self.cursor.fetchone()
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            self.result = None
+        finally:
+            if self.cursor:
+                self.cursor.close()
+        return self.result
 
     def close(self):
         self.cursor.close()
