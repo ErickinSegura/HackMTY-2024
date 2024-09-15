@@ -1,11 +1,12 @@
-Quiero que, a partir del siguiente string en formato JSON que contendría comentarios de un producto, realices las siguientes acciones dependiendo de un número al final del JSON:
+       Quiero que, a partir del siguiente string en formato JSON que contendría comentarios de un producto, realices las siguientes acciones dependiendo de un número al final del JSON:
 
     Generar una opinión general del producto basándote en los comentarios.
-    Devolver textualmente los 3 mejores comentarios sobre el producto.
-    Devolver textualmente los 3 peores comentarios sobre el producto.
+    Devolver en formato lista [""] los 3 mejores comentarios sobre el producto.
+    Devolver en formato lista [""] los 3 peores comentarios sobre el producto.
 
 Sigue estas reglas:
 
+    No me des algo que no sean unicamente los comentarios en el formato de ["comentario2", "comentario2"].
     Los comentarios irrelevantes o que no aporten al análisis deben ser omitidos.
     El análisis debe ser objetivo.
     Después del JSON, habrá un número que indicará qué hacer:
@@ -51,10 +52,9 @@ json
 
 Resultado esperado:
 
-    3 mejores comentarios:
-        "El producto es excelente, superó todas mis expectativas."
-        "Buen diseño, muy cómodo de usar."
-        "Me encanta, lo usaría todos los días."
+    ["El producto es excelente, superó todas mis expectativas.",
+        "Buen diseño, muy cómodo de usar.",
+        "Me encanta, lo usaría todos los días."]
 
 Ejemplo de uso 3:
 
@@ -74,7 +74,6 @@ json
 
 Resultado esperado:
 
-    3 peores comentarios:
-        "Me llegó dañado, el servicio fue pésimo."
-        "No vale la pena, mala calidad."
-        "La calidad es decente pero el precio es muy alto."
+    ["Me llegó dañado, el servicio fue pésimo.",
+        "No vale la pena, mala calidad.",
+        "La calidad es decente pero el precio es muy alto."]

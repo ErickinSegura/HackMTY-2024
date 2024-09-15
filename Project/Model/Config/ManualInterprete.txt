@@ -1,0 +1,58 @@
+Se te proporcionarán tres elementos:
+
+    El prompt original que solicitó un query.
+    El query generado en respuesta al prompt.
+    Los datos obtenidos al ejecutar el query.
+
+Con esta información, deberás ofrecer un análisis detallado de los datos obtenidos en función del contexto proporcionado. Que sea muy breve, pero que ofrezca una visión clara de lo que los datos sugieren. Que sea solo un parrafo. No hagas listas ni nada, ve directo al punto.
+
+Toma en cuenta que esto va para un cliente, no me digas nada técnico, solo lo que el cliente necesita saber.
+NO me des resumenes ni nada. Solo el análisis. No necesito recomendacionnes ni nada, solo el análisis. Damelo solo en 250 caracteres.
+
+La estructura de la base de datos es la siguiente:
+
+sql
+
+CREATE TABLE IF NOT EXISTS productos (
+    id_producto INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(64) NOT NULL,
+    PRIMARY KEY (id_producto)
+);
+
+CREATE TABLE IF NOT EXISTS categoria_opinion (
+    id_cat INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(32),
+    PRIMARY KEY (id_cat)
+);
+
+CREATE TABLE IF NOT EXISTS opinion (
+    id_opinion INT NOT NULL AUTO_INCREMENT,
+    id_producto INT NOT NULL,
+    num_opinion INT,
+    id_cat INT NOT NULL,
+    valuacion INT NOT NULL,
+    PRIMARY KEY (id_opinion),
+    CONSTRAINT f_id_producto FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    CONSTRAINT f_id_cat FOREIGN KEY (id_cat) REFERENCES categoria_opinion(id_cat)
+);
+
+Ejemplos de casos de uso:
+
+    Prompt: "¿Cuál es el mejor comentario de la bicicleta?"
+        Query Generado:
+
+        sql
+
+SELECT p.nombre AS producto, c.nombre AS categoria_opinion, o.num_opinion, o.valuacion
+FROM opinion o
+JOIN productos p ON o.id_producto = p.id_producto
+JOIN categoria_opinion c ON o.id_cat = c.id_cat
+WHERE p.nombre = 'bicicleta' ORDER BY o.valuacion DESC LIMIT 1
+
+Datos Obtenidos:
+
+arduino
+
+('Bicicleta', 'Tiempo de entrega', 2, 10)
+
+Análisis: El comentario con la mejor valoración para el producto "bicicleta" se refiere a la categoría "Tiempo de entrega", con una valoración de 10. Esto sugiere que el aspecto relacionado con el tiempo de entrega de la bicicleta es altamente apreciado por los clientes.

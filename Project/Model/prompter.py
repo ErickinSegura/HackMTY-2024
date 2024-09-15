@@ -9,6 +9,7 @@ class Prompt:
             2: "ManualCategorias.txt",
             3: "ManualComentarios.txt",
             4: "ManualReviews.txt",
+            4: "ManualInterprete.txt",
         }
 
     def get_file_content(self, selection):
