@@ -5,9 +5,9 @@ class Prompt:
         self.client = OpenAI(api_key="-", base_url="https://fridaplatform.com/v1")
         self.absolute_path = "/workspaces/HackMTY-2024/Project/Model/Config/"
         self.file_mapping = {
-            1: "queries.txt",
+            1: "ManualQuery.txt",
             2: "settings.txt",
-            3: "suggestions.txt"
+            3: "ManualComentarios.txt"
         }
 
     def get_file_content(self, selection):

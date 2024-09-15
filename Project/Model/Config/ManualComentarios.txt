@@ -1,0 +1,80 @@
+Quiero que, a partir del siguiente string en formato JSON que contendría comentarios de un producto, realices las siguientes acciones dependiendo de un número al final del JSON:
+
+    Generar una opinión general del producto basándote en los comentarios.
+    Devolver textualmente los 3 mejores comentarios sobre el producto.
+    Devolver textualmente los 3 peores comentarios sobre el producto.
+
+Sigue estas reglas:
+
+    Los comentarios irrelevantes o que no aporten al análisis deben ser omitidos.
+    El análisis debe ser objetivo.
+    Después del JSON, habrá un número que indicará qué hacer:
+        Si el número es 1, genera una opinión general.
+        Si el número es 2, devuelve los 3 mejores comentarios.
+        Si el número es 3, devuelve los 3 peores comentarios.
+
+Ejemplo de uso 1:
+
+json
+
+{
+    "comentarios": [
+        "El producto es excelente, superó todas mis expectativas.",
+        "La calidad es decente pero el precio es muy alto.",
+        "Me llegó dañado, el servicio fue pésimo.",
+        "Buen diseño, muy cómodo de usar.",
+        "No vale la pena, mala calidad.",
+        "Me encanta, lo usaría todos los días."
+    ]
+}
+1
+
+Resultado esperado:
+
+    Opinión general: "El producto tiene un balance entre comentarios positivos sobre su diseño y usabilidad, pero algunas críticas destacan problemas con la calidad y el precio."
+
+Ejemplo de uso 2:
+
+json
+
+{
+    "comentarios": [
+        "El producto es excelente, superó todas mis expectativas.",
+        "La calidad es decente pero el precio es muy alto.",
+        "Me llegó dañado, el servicio fue pésimo.",
+        "Buen diseño, muy cómodo de usar.",
+        "No vale la pena, mala calidad.",
+        "Me encanta, lo usaría todos los días."
+    ]
+}
+2
+
+Resultado esperado:
+
+    3 mejores comentarios:
+        "El producto es excelente, superó todas mis expectativas."
+        "Buen diseño, muy cómodo de usar."
+        "Me encanta, lo usaría todos los días."
+
+Ejemplo de uso 3:
+
+json
+
+{
+    "comentarios": [
+        "El producto es excelente, superó todas mis expectativas.",
+        "La calidad es decente pero el precio es muy alto.",
+        "Me llegó dañado, el servicio fue pésimo.",
+        "Buen diseño, muy cómodo de usar.",
+        "No vale la pena, mala calidad.",
+        "Me encanta, lo usaría todos los días."
+    ]
+}
+3
+
+Resultado esperado:
+
+    3 peores comentarios:
+        "Me llegó dañado, el servicio fue pésimo."
+        "No vale la pena, mala calidad."
+        "La calidad es decente pero el precio es muy alto."

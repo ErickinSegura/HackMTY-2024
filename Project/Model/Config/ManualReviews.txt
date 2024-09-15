@@ -1,0 +1,1 @@
+Se te va a pasar un JSON con datos de opiniones de un producto en específico, lo que quiero que hagas tu es que 
