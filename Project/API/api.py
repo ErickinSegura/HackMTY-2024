@@ -67,12 +67,36 @@ def get_general_opinion(product_id):
     response = ai.prompt(comentarios, 3)
     return jsonify(response)
 
-@app.route('/ask/', methods=['GET'])
+@app.route('/ask', methods=['POST'])
 def ask():
     prompt = request.json.get('prompt')
 
     # Obtener la respuesta
     response = ai.prompt(prompt, 1)
+    result = db.run_query(response)
+    analysis = ai.prompt(str(prompt) + " " + str(response) + " " + str(result), 4)
+
+    return jsonify(analysis)
+
+@app.route('/products', methods=['GET'])
+def get_products():
+    result = db.run_query("SELECT nombre FROM productos")
+    results = [row[0] for row in result]
+    return jsonify(results)
+
+@app.route('/opinion', methods=['POST'])
+def opinion():
+    data = request.json
+    opinion = data['opinion']
+    product = data['product']
+
+    # Ejecutar la consulta usando parámetros para evitar inyección SQL
+    print(f"CALL crear_comentario('{product}', '{opinion}')")
+    db.add_comment(product, opinion)
+
+    return jsonify({"status": "success", "message": "Comentario agregado correctamente"})
+
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':
