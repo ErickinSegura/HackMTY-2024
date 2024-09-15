@@ -8,7 +8,7 @@ class Prompt:
             1: "ManualQuery.txt",
             2: "ManualCategorias.txt",
             3: "ManualComentarios.txt",
-            4: "ManualReviews.txt",
+            5: "ManualReviews.txt",
             4: "ManualInterprete.txt",
         }
 

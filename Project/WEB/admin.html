@@ -9,6 +9,10 @@
     <title>Dashboard de Administrador - Empresa XYZ</title>
 </head>
 <body>
+    <div id="loadingScreen" style="display: none;">
+        <div class="spinner-border text-light"></div>
+    </div>
+
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8">
@@ -19,9 +23,6 @@
                             <label for="productSelect">Selecciona una opción:</label>
                             <select class="form-control" id="productSelect" required aria-describedby="productHelp">
                                 <option value="">Realizar consulta</option>
-                                <option value="1">Producto A</option>
-                                <option value="2">Producto B</option>
-                                <option value="3">Producto C</option>
                             </select>
                             <small id="productHelp" class="form-text text-muted">Elige un producto para ver su información o selecciona para hacer una consulta.</small>
                         </div>

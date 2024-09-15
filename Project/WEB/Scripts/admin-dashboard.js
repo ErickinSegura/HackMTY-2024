@@ -1,67 +1,117 @@
-const products = {
-    1: {
-        name: "Producto A",
-        image: "https://via.placeholder.com/400x300.png?text=Producto+A",
-        goodComments: ["Excelente calidad", "Entrega rápida", "Muy cómodo de usar"],
-        badComments: ["Un poco caro", "El empaque podría mejorar", "Instrucciones poco claras"],
-        summary: "En general, los usuarios están satisfechos con el Producto A. La mayoría de las críticas se centran en el precio y las instrucciones de uso.",
-        ratings: {
-            "Tiempo de entrega": 4.5,
-            "Calidad de los materiales": 4,
-            "Comodidad de uso": 3.5,
-            "Estética": 4,
-            "Precio": 3
-        }
-    },
-    2: {
-        name: "Producto B",
-        image: "https://via.placeholder.com/400x300.png?text=Producto+B",
-        goodComments: ["Diseño innovador", "Buena relación calidad-precio", "Fácil de usar"],
-        badComments: ["Entregas lentas", "Calidad inconsistente", "Servicio al cliente mejorable"],
-        summary: "El Producto B tiene opiniones mixtas. Los usuarios aprecian su diseño y facilidad de uso, pero hay preocupaciones sobre la consistencia de la calidad y los tiempos de entrega.",
-        ratings: {
-            "Tiempo de entrega": 3,
-            "Calidad de los materiales": 3.5,
-            "Comodidad de uso": 4,
-            "Estética": 4.5,
-            "Precio": 4
-        }
-    },
-    3: {
-        name: "Producto C",
-        image: "https://via.placeholder.com/400x300.png?text=Producto+C",
-        goodComments: ["Muy duradero", "Excelente atención al cliente", "Packaging eco-friendly"],
-        badComments: ["Precio elevado", "Curva de aprendizaje empinada", "Diseño poco atractivo"],
-        summary: "El Producto C es apreciado por su durabilidad y el compromiso de la empresa con la sostenibilidad. Sin embargo, algunos usuarios consideran que el precio es alto y que el producto puede ser difícil de usar al principio.",
-        ratings: {
-            "Tiempo de entrega": 4,
-            "Calidad de los materiales": 5,
-            "Comodidad de uso": 3,
-            "Estética": 3,
-            "Precio": 2.5
-        }
+const apiUrl = 'https://redesigned-space-succotash-v9wv45jjqxw3pvpv-5000.app.github.dev/';
+
+function toggleLoadingScreen(show) {
+    const loadingScreen = $('#loadingScreen');
+    if (show) {
+        loadingScreen.fadeIn(300);
+    } else {
+        loadingScreen.fadeOut(300);
     }
-};
+}
 
-function updateProductInfo(productId) {
-    const product = products[productId];
-    if (!product) return;
+async function loadProducts() {
+    try {
+        const response = await fetch(apiUrl + 'products');
+        if (!response.ok) {
+            throw new Error('Error en la solicitud de productos');
+        }
 
-    $('#productName').text(product.name);
-    $('#productImage').attr('src', product.image);
-    $('#goodComments').html(product.goodComments.map(comment => `<li>${comment}</li>`).join(''));
-    $('#badComments').html(product.badComments.map(comment => `<li>${comment}</li>`).join(''));
-    $('#commentSummary').text(product.summary);
-    $('#ratings').html(Object.entries(product.ratings).map(([category, rating]) => `
-        <div class="rating-item">
-            <span>${category}:</span>
-            <span>${rating}/5</span>
-        </div>
-    `).join(''));
+        const data = await response.json();
+        const productSelect = $('#productSelect');
+        
+        productSelect.empty();
+        productSelect.append('<option value="">Realizar consulta</option>');
 
-    $('#queryCard').fadeOut(300, function() {
-        $('#productInfo').fadeIn(300);
-    });
+        data.forEach(product => {
+            productSelect.append(`<option value="${product}">${product}</option>`);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al cargar los productos. Por favor, intenta de nuevo más tarde.');
+    }
+}
+
+async function fetchProductData(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error);
+        throw error;
+    }
+}
+
+async function updateProductInfo(product) {
+    try {
+        // Show loading screen
+        toggleLoadingScreen(true);
+
+        // Limpiar información anterior
+        $('#goodComments, #badComments, #ratings').empty();
+        $('#commentSummary').text('');
+
+        // Actualizar nombre e imagen del producto
+        $('#productName').text(product);
+        $('#productImage').attr('src', 'https://preview.redd.it/vw6c9iwr6rk51.jpg?auto=webp&s=a9ca2ca97cb0b1a386d3ce5cc3ba6a4862761b1c');
+
+        // Fetch y actualizar buenos comentarios
+        try {
+            const goodComments = await fetchProductData(`${apiUrl}best_comments/${product}`);
+            $('#goodComments').html(goodComments.map(comment => `<li>${comment}</li>`).join(''));
+        } catch (error) {
+            $('#goodComments').html('<li>Error al cargar los buenos comentarios.</li>');
+        }
+
+        // Fetch y actualizar malos comentarios
+        try {
+            const badComments = await fetchProductData(`${apiUrl}worst_comments/${product}`);
+            $('#badComments').html(badComments.map(comment => `<li>${comment}</li>`).join(''));
+        } catch (error) {
+            $('#badComments').html('<li>Error al cargar los malos comentarios.</li>');
+        }
+
+        // Fetch y actualizar resumen
+        try {
+            const summary = await fetchProductData(`${apiUrl}op_general/${product}`);
+            $('#commentSummary').text(summary);
+        } catch (error) {
+            $('#commentSummary').text('Error al cargar el resumen.');
+        }
+
+        // Fetch y actualizar calificaciones
+        const categories = ['Tiempo de entrega', 'Calidad de los materiales', 'Comodidad de uso', 'Estética', 'Precio'];
+        for (let i = 1; i < categories.length+1; i++) {
+            try {
+                const data = await fetchProductData(`${apiUrl}review/${product}/${i}`);
+                $('#ratings').append(`
+                    <span>${categories[i-1]}:</span> 
+                    <div class="rating-item">
+                        <span>${data}</span>
+                    </div>
+                `);
+            } catch (error) {
+                $('#ratings').append(`
+                    <div class="rating-item">
+                        <span>${categories[i]}:</span>
+                        <span>Error al cargar</span>
+                    </div>
+                `);
+            }
+        }
+
+        $('#queryCard').fadeOut(300, function() {
+            $('#productInfo').fadeIn(300);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al cargar la información del producto. Por favor, intenta de nuevo más tarde.');
+    } finally {
+        // Hide loading screen
+        toggleLoadingScreen(false);
+    }
 }
 
 function showQueryCard() {
@@ -72,10 +122,10 @@ function showQueryCard() {
 
 function typeWriter(text, element, i, fnCallback) {
     if (i < text.length) {
-        element.text(text.substring(0, i+1));
+        element.html(text.substring(0, i+1));
         setTimeout(function() {
             typeWriter(text, element, i + 1, fnCallback)
-        }, 50);
+        }, 20);
     } else if (typeof fnCallback == 'function') {
         setTimeout(fnCallback, 700);
     }
@@ -83,28 +133,71 @@ function typeWriter(text, element, i, fnCallback) {
 
 function startTyping(text) {
     let container = $('#modelResponse');
-    container.html('<div class="typing-container"><span class="typing-text"></span></div>');
+    container.html('<div class="typing-container form-control"><span class="typing-text "></span></div>');
     let element = container.find('.typing-text');
     typeWriter(text, element, 0, function() {
         element.removeClass('typing-text');
-        container.html(text);
     });
 }
 
-function submitQuery() {
-    const query = $('#queryInput').val();
-    // Aquí deberías hacer la llamada a tu modelo de IA
-    // Por ahora, simularemos una respuesta
-    const response = `Respuesta simulada para la consulta: "${query}"`;
+
+
+async function submitQuery() {
+    const query = $('#queryInput').val().trim();
+    if (!query) {
+        alert('Por favor, ingresa tu consulta.');
+        return;
+    }
     
-    startTyping(response);
+    // Mostrar indicador de carga
+    $('#modelResponse').html('<div class="spinner-border" role="status"><span class="sr-only">Cargando...</span></div>');
+    
+    try {
+        const response = await fetch(`${apiUrl}ask`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: query }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Error en la solicitud de red');
+        }
+
+        const jsonData = await response.json();
+        
+        // Verifica si la respuesta es una cadena JSON y la analiza si es necesario
+        let formattedResponse;
+        try {
+            formattedResponse = JSON.parse(jsonData);
+            // Si es un objeto, lo convertimos a una cadena formateada
+            if (typeof formattedResponse === 'object') {
+                formattedResponse = JSON.stringify(formattedResponse, null, 2);
+            }
+        } catch (e) {
+            // Si no es JSON válido, usamos la respuesta tal cual
+            formattedResponse = jsonData;
+        }
+        
+        // Reemplaza los saltos de línea con <br> para HTML
+        formattedResponse = formattedResponse.replace(/\n/g, '<br>');
+        
+        startTyping(formattedResponse);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        startTyping('Hubo un problema con la solicitud. Por favor, intenta de nuevo más tarde.');
+    }
 }
 
 $(document).ready(function() {
+    loadProducts();
+
     $('#productSelect').change(function() {
-        const productId = $(this).val();
-        if (productId) {
-            updateProductInfo(productId);
+        const product = $(this).val();
+        if (product) {
+            updateProductInfo(product);
         } else {
             showQueryCard();
         }
@@ -112,6 +205,13 @@ $(document).ready(function() {
 
     $('#submitQuery').click(submitQuery);
 
-    // Mostrar la tarjeta de consulta inicialmente
+    // Agregar manejo de la tecla Enter en el campo de entrada
+    $('#queryInput').keypress(function(e) {
+        if(e.which == 13) { // 13 es el código de la tecla Enter
+            submitQuery();
+            return false; // Previene el comportamiento por defecto del Enter
+        }
+    });
+
     showQueryCard();
 });

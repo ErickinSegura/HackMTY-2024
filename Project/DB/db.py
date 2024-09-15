@@ -137,6 +137,28 @@ class DB:
                 self.cursor.close()
         return self.result
 
+    def get_scores(self, product_name):
+        self.conn = mysql.connector.connect(
+            host=self.credentials[0],
+            user=self.credentials[1],
+            password=self.credentials[2],
+            database=self.credentials[3],
+            port=int(self.credentials[4]),
+            ssl_ca=self.credentials[5]
+        )
+
+        try:
+            self.cursor = self.conn.cursor()
+            self.cursor.execute("CALL get_scores(%s)", (product_name,))
+            self.result = self.cursor.fetchall()
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            self.result = []
+        finally:
+            if self.cursor:
+                self.cursor.close()
+        return self.result
+
     def close(self):
         self.cursor.close()
         self.conn.close()

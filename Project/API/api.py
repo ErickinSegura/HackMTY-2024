@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import sys
 import os
 
@@ -8,6 +9,7 @@ from DB.db import DB
 
 # Crear Flask
 app = Flask(__name__)
+CORS(app)
 
 # Crear Prompter
 ai = Prompt()
@@ -41,7 +43,6 @@ def get_resume(product_id):
     
     #Quitar sublistas
     comentarios = [comentario[0] for comentario in comentarios]
-
     return jsonify(comentarios)
 
 @app.route('/best_comments/<string:product_name>', methods=['GET'])
@@ -75,7 +76,6 @@ def ask():
     response = ai.prompt(prompt, 1)
     result = db.run_query(response)
     analysis = ai.prompt(str(prompt) + " " + str(response) + " " + str(result), 4)
-
     return jsonify(analysis)
 
 @app.route('/products', methods=['GET'])
@@ -90,9 +90,30 @@ def opinion():
     opinion = data['opinion']
     product = data['product']
 
+    product_id_query = f"SELECT id_producto FROM productos WHERE nombre = '{product}'"
+    product_id = db.run_query(product_id_query)[0][0]
+
     # Ejecutar la consulta usando parámetros para evitar inyección SQL
     print(f"CALL crear_comentario('{product}', '{opinion}')")
     db.add_comment(product, opinion)
+
+    result = eval(ai.prompt(opinion, 2))
+    for opinion in result:
+
+        # Categorize the opinion
+        if opinion[0] == "Tiempo de entrega":
+            cat = 0
+        elif opinion[0] == "Calidad de los materiales":
+            cat = 1
+        elif opinion[0] == "Comodidad de uso":
+            cat = 2
+        elif opinion[0] == "Estética":
+            cat = 3
+        elif opinion[0] == "Precio":
+            cat = 4
+
+        # Insert the opinion into the database
+        db.insert_opinion(product_id, cat, opinion[1])
 
     return jsonify({"status": "success", "message": "Comentario agregado correctamente"})
 
@@ -143,6 +164,14 @@ def start():
 def get_score(product_name, category):
     score = db.get_score(product_name, category)
     return jsonify({"score": score})
+
+@app.route('/review/<string:product_name>/<int:category>', methods=['GET'])
+def get_review(product_name, category):
+    scores = db.get_scores(product_name)
+    prompt = "Producto: " + str(product_name) + str(scores) + str(category)
+    response = ai.prompt(prompt, 5)
+    return jsonify(response)
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

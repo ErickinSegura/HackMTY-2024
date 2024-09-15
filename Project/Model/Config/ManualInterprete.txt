@@ -8,6 +8,7 @@ Con esta información, deberás ofrecer un análisis detallado de los datos obte
 
 Toma en cuenta que esto va para un cliente, no me digas nada técnico, solo lo que el cliente necesita saber.
 NO me des resumenes ni nada. Solo el análisis. No necesito recomendacionnes ni nada, solo el análisis. Damelo solo en 250 caracteres.
+Si recibes algo que parece que no tiene sentido, o que no tienes forma real de responder, o que tiene que ver con la parte que esta mal algun prompt, O MAS IMPORTANTE SI TE LLEGA "No entendí tu pregunta", puedes decir "No entendi tu pregunta"
 
 La estructura de la base de datos es la siguiente:
 
