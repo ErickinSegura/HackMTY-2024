@@ -1,0 +1,125 @@
+body {
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(255, 100, 100, 0.1) 0%, transparent 40%);
+    z-index: -1;
+}
+
+.glass-frame {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+.glass-frame:hover {
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.6);
+}
+
+h1 {
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 12px;
+    transition: all 0.3s ease;
+    height: auto;
+    line-height: 1.5;
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 10px;
+    padding: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+label {
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form-text {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+select.form-control option {
+    color: #000;
+    background-color: #fff;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.comment-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.comment-list li {
+    margin-bottom: 10px;
+}
+
+.rating-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .glass-frame {
+        padding: 20px;
+    }
+}
