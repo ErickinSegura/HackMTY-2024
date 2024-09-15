@@ -176,6 +176,26 @@ select.form-control option {
     color: #ffffff;
 }
 
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.4em;
+    border-top-color: #ffffff;
+}
+
 @media (max-width: 768px) {
     .glass-frame {
         padding: 20px;

@@ -53,9 +53,17 @@ async function updateProductInfo(product) {
         $('#goodComments, #badComments, #ratings').empty();
         $('#commentSummary').text('');
 
-        // Actualizar nombre e imagen del producto
+        // Actualizar nombre del producto
         $('#productName').text(product);
-        $('#productImage').attr('src', 'https://preview.redd.it/vw6c9iwr6rk51.jpg?auto=webp&s=a9ca2ca97cb0b1a386d3ce5cc3ba6a4862761b1c');
+
+        // Fetch y actualizar imagen del producto
+        try {
+            const imgUrl = await fetchProductData(`${apiUrl}img/${product}`);
+            $('#productImage').attr('src', imgUrl);
+        } catch (error) {
+            $('#productImage').attr('src', 'https://default-image-url.com/default.jpg'); // URL de una imagen por defecto
+            console.error('Error al cargar la imagen del producto:', error);
+        }
 
         // Fetch y actualizar buenos comentarios
         try {
@@ -83,11 +91,11 @@ async function updateProductInfo(product) {
 
         // Fetch y actualizar calificaciones
         const categories = ['Tiempo de entrega', 'Calidad de los materiales', 'Comodidad de uso', 'Estética', 'Precio'];
-        for (let i = 1; i < categories.length+1; i++) {
+        for (let i = 1; i < categories.length + 1; i++) {
             try {
                 const data = await fetchProductData(`${apiUrl}review/${product}/${i}`);
                 $('#ratings').append(`
-                    <span>${categories[i-1]}:</span> 
+                    <span>${categories[i - 1]}:</span> 
                     <div class="rating-item">
                         <span>${data}</span>
                     </div>
@@ -113,6 +121,7 @@ async function updateProductInfo(product) {
         toggleLoadingScreen(false);
     }
 }
+
 
 function showQueryCard() {
     $('#productInfo').fadeOut(300, function() {

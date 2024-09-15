@@ -172,6 +172,11 @@ def get_review(product_name, category):
     response = ai.prompt(prompt, 5)
     return jsonify(response)
 
+@app.route('/img/<string:product_name>', methods=['GET'])
+def get_img(product_name):
+    img_url = db.get_img(product_name)
+    return jsonify(img_url)
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

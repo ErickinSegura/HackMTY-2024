@@ -7,7 +7,7 @@
 Sigue estas reglas:
 
     No me des algo que no sean unicamente los comentarios en el formato de ["comentario2", "comentario2"].
-    Los comentarios irrelevantes o que no aporten al análisis deben ser omitidos.
+    Los comentarios irrelevantes, inutiles, sin contexto o que no aporten al análisis deben ser omitidos.
     El análisis debe ser objetivo.
     Después del JSON, habrá un número que indicará qué hacer:
         Si el número es 1, genera una opinión general.
