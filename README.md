@@ -13,7 +13,7 @@
 
 ### ! Our elevator Pitch ¡ 👇
 
-
+#Lux its a SMEs business owner oriented service that allows its users to receive, analyze and report on a natural language mode in order to create new business insights, analytics, and recommendations
 
 ### Problematic Addressed
 The problem to be addressed with our project is focused on ``#SMEs in Mexico``, as they are constantly facing challenges due to the fact of not having implemented any kind of technological resource in their operations, and have to deal with issues such as a low client ratio or low brand recognition. 
