@@ -97,6 +97,27 @@ select.form-control option {
     background-color: #fff;
 }
 
+.product-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.comment-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.comment-list li {
+    margin-bottom: 10px;
+}
+
+.rating-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
 @media (max-width: 768px) {
     .glass-frame {
         padding: 20px;
