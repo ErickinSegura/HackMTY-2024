@@ -6,8 +6,9 @@ class Prompt:
         self.absolute_path = "/workspaces/HackMTY-2024/Project/Model/Config/"
         self.file_mapping = {
             1: "ManualQuery.txt",
-            2: "settings.txt",
-            3: "ManualComentarios.txt"
+            2: "ManualCategorias.txt",
+            3: "ManualComentarios.txt",
+            4: "ManualReviews.txt",
         }
 
     def get_file_content(self, selection):

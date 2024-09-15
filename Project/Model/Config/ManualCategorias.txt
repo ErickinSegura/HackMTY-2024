@@ -1,0 +1,35 @@
+Vas a recibir un texto que tendrás que analizar para identificar si entra en alguna de las siguientes categorías. Para cada categoría presente en el comentario, debes devolver un valor del 0 al 10 (según la relevancia del comentario en esa categoría). Si una categoría no está presente, no se incluye en la salida.
+
+Devuelve el resultado en formato de tuplas dentro de una lista, donde cada tupla contiene el nombre de la categoría y su respectivo puntaje. Ejemplo: [("Tiempo de entrega", 10), ("Precio", 8)].
+Categorías:
+
+    Tiempo de entrega
+    Calidad de los materiales
+    Comodidad de uso
+    Estética
+    Precio
+
+Se lo mas objetivo posible al asignar los puntajes, y no te dejes llevar por la subjetividad. Si no se menciona una categoría, no la incluyas en la salida.
+NO me devuelvas nada que no sea una tupla con el nombre de la categoría y su respectivo puntaje.
+
+Ejemplo de uso 1:
+Texto de entrada:
+
+"El producto llegó muy rápido y a un excelente precio."
+Resultado esperado:
+
+[("Tiempo de entrega", 9), ("Precio", 10)]
+Ejemplo de uso 2:
+Texto de entrada:
+
+"La calidad de los materiales no es la mejor, pero el diseño es atractivo."
+Resultado esperado:
+
+[("Calidad de los materiales", 5), ("Estética", 8)]
+Ejemplo de uso 3:
+Texto de entrada:
+
+"El producto es bastante cómodo, pero el precio no justifica su valor."
+Resultado esperado:
+
+[("Comodidad de uso", 9), ("Precio", 6)]

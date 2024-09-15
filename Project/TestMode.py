@@ -3,24 +3,10 @@ from Model.prompter import Prompt
 
 pr = Prompt()
 
-prom = """{
-    "comentarios": [
-        "El producto llegó roto y nadie me dio solución. Muy decepcionante.",
-        "La calidad es pésima, se siente muy frágil y mal hecho.",
-        "No funciona como se describe, no cumple con lo que promete.",
-        "Lo peor que he comprado en mucho tiempo, no lo recomiendo.",
-        "El material parece barato y se dañó al poco tiempo de uso.",
-        "El servicio de atención al cliente fue terrible, no me resolvieron nada.",
-        "No me gustó, esperaba algo mucho mejor por el precio.",
-        "Excelente producto, justo lo que necesitaba. Muy satisfecho.",
-        "Funciona perfectamente, es muy fácil de usar y de buena calidad.",
-        "La calidad es bastante buena y llegó antes de lo esperado. Muy feliz con mi compra."
-    ]
-}
+prom = "El producto llegó en perfectas condiciones y mucho antes de lo esperado. La calidad de los materiales es muy buena, aunque el precio es un poco alto para lo que ofrece."
 
-4
-"""
+response = pr.prompt(prom, 2)
 
-response = pr.prompt(prom, 3)
+list = eval(response)
 
-print(response)
+print(list[0][0])

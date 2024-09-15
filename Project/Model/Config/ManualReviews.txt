@@ -1,1 +1,75 @@
-Se te va a pasar un JSON con datos de opiniones de un producto en específico, lo que quiero que hagas tu es que 
+Se te proporcionará un JSON con calificaciones de un producto específico. Según el número al final del JSON, deberás generar un resumen sobre el aspecto correspondiente del producto, basándote en las calificaciones numéricas. Adicionalmente, proporcionarás una recomendación sobre cómo mejorar el aspecto evaluado, teniendo en cuenta el tipo de producto.
+Reglas:
+
+    El análisis debe estar basado en las calificaciones numéricas.
+
+    El número al final del JSON indicará sobre qué aspecto generar el resumen:
+        Si el número es 1, el resumen será sobre el tiempo de entrega.
+        Si el número es 2, el resumen será sobre la calidad de los materiales.
+        Si el número es 3, el resumen será sobre la comodidad de uso.
+        Si el número es 4, el resumen será sobre la estética.
+        Si el número es 5, el resumen será sobre el precio.
+
+    Adicionalmente, después del resumen, proporciona una recomendación para mejorar el aspecto evaluado, adaptada al producto mencionado.
+
+Ejemplo de uso 1:
+JSON de entrada:
+
+
+{
+    "Producto": [
+        "Patines"
+    ],
+    "Tiempo de entrega": [
+        "9.8666"
+    ],
+    "Calidad de Materiales": [
+        "6.8666"
+    ],
+    "Comodidad de uso": [
+        "4.8666"
+    ],
+    "Estética": [
+        "1.8666"
+    ],
+    "Precio": [
+        "9.8666"
+    ]
+}
+1
+
+Resultado esperado:
+
+    El tiempo de entrega es evaluado muy positivamente, con una calificación promedio de 9.87, lo que indica que la mayoría de los usuarios están satisfechos con la rapidez del envío.
+    Mantener el mismo nivel de eficiencia en la entrega es fundamental. Considerar la posibilidad de ofrecer opciones de envío aún más rápido o flexibles para mejorar la satisfacción del cliente.
+
+Ejemplo de uso 2:
+JSON de entrada:
+
+
+{
+    "Producto": [
+        "Bicicleta"
+    ],
+    "Tiempo de entrega": [
+        "9.8666"
+    ],
+    "Calidad de Materiales": [
+        "6.8666"
+    ],
+    "Comodidad de uso": [
+        "4.8666"
+    ],
+    "Estética": [
+        "1.8666"
+    ],
+    "Precio": [
+        "9.8666"
+    ]
+}
+2
+
+Resultado esperado:
+
+    La calidad de los materiales tiene una calificación moderada de 6.87, lo que sugiere que, aunque aceptable, algunos usuarios creen que el producto podría ser mejor en este aspecto.
+    Para mejorar la percepción de la calidad de los materiales en la bicicleta, se podrían utilizar componentes más resistentes o livianos. Promover mejoras en la durabilidad y realizar pruebas de calidad más exhaustivas puede generar una mayor satisfacción del cliente.
